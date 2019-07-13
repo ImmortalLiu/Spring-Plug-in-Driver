@@ -1,0 +1,24 @@
+plugin-in-driver:
+  jar-lib-path:
+    ...
+  load-order:
+    hello-world:
+      id:
+      name:
+      url:
+      boot-class:
+        ...
+      scan-path:
+        ...
+      config:
+        ...
+    hello-china:
+      id:
+      name:
+      url:
+      boot-class:
+        ...
+      scan-path:
+        ...
+      config:
+        ...

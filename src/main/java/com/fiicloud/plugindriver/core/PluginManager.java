@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -25,11 +26,15 @@ import java.util.jar.JarFile;
  * @author Anthony
  */
 public class PluginManager {
+    private String jarLibPath;
+    private String relationYml;
     private URLClassLoader classLoader;
 
     private static List<Class> springIOCAnnotations = new ArrayList<>();
 
     private static List<PluginBootstrap> bootClasses = new ArrayList<>();
+
+    private static List<Plugin> plugins = new ArrayList<>();
 
     // 可以放进spring容器的类的注解，待优化
     static {
@@ -39,8 +44,31 @@ public class PluginManager {
         springIOCAnnotations.add(Component.class);
     }
 
-    public void setClassLoader(URLClassLoader urlClassLoader) {
-        this.classLoader = urlClassLoader;
+    public PluginManager jarLibPath(String path) {
+        this.setJarLibPath(path);
+        return this;
+    }
+
+    public PluginManager ymlPath(String path) {
+        this.setRelationYml(path);
+        return this;
+    }
+
+    public PluginManager annotations(Class... annotations) {
+        for (Class annotation : annotations) {
+            if (!springIOCAnnotations.contains(annotation)) {
+                springIOCAnnotations.add(annotation);
+            }
+        }
+        return this;
+    }
+
+    public Plugin loadOrder(){
+        return new Plugin();
+    }
+
+    public PluginManager and() {
+        return this;
     }
 
 //    public void register(ConfigurableApplicationContext context) {
@@ -63,33 +91,9 @@ public class PluginManager {
         bootClasses.forEach(bootClass -> bootClass.boot(context));
     }
 
-//    private List<Plugin> getPlugins() {
-//        Connection connection = JDBCManager.getConnection();
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//
-//        List<Plugin> pluginList = new ArrayList<>();
-//        try {
-//            String sql = "select * from plugin";
-//            preparedStatement = connection.prepareStatement(sql);
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                Plugin plugin = new Plugin();
-//                plugin.setId(resultSet.getInt("id"));
-//                plugin.setBootClass(resultSet.getString("boot_class"));
-//                plugin.setName(resultSet.getString("name"));
-//                plugin.setUrl(resultSet.getString("url"));
-//                plugin.setScanPath(resultSet.getString("scan_path"));
-//                pluginList.add(plugin);
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException("从数据库获取插件配置失败");
-//        } finally {
-//            JDBCManager.closeConnection(resultSet, preparedStatement, connection);
-//        }
-//
-//        return pluginList;
-//    }
+    private PluginManager loadPlugins() {
+        return this;
+    }
 
     private void fetchBootClass(Plugin plugin) {
         if (plugin.getBootClass() == null || plugin.getBootClass().trim().isEmpty()) {
@@ -149,6 +153,132 @@ public class PluginManager {
             return new JarFile(plugin.getUrl());
         } catch (IOException e) {
             throw new RuntimeException("获取插件中的文件信息失败，插件名称：" + plugin.getName());
+        }
+    }
+
+    private void setJarLibPath(String jarLibPath) {
+        this.jarLibPath = jarLibPath;
+    }
+
+    public String getJarLibPath() {
+        return this.jarLibPath;
+    }
+
+    private void setRelationYml(String relationYml) {
+        this.relationYml = relationYml;
+    }
+
+    public String getRelationYml() {
+        return this.relationYml;
+    }
+
+    public void setClassLoader(URLClassLoader urlClassLoader) {
+        this.classLoader = urlClassLoader;
+    }
+
+    private class Plugin {
+        private String id;
+        private String name;
+        private String url;
+        private String bootClass;
+        private List<String> scanPath;
+        private String config;
+
+        Plugin(){}
+        Plugin(String id, String name, String url, String bootClass, String scanPath, String config){
+            this.setId(id);
+            this.setName(name);
+            this.setUrl(url);
+            this.setBootClass(bootClass);
+            this.setScanPath(scanPath);
+            this.setConfig(config);
+        }
+
+        public Plugin id(String id){
+            this.setId(id);
+            return this;
+        }
+
+        public Plugin name(String name){
+            this.setName(name);
+            return this;
+        }
+
+        public Plugin url(String url) {
+            this.setUrl(url);
+            return this;
+        }
+
+        public Plugin bootClass(String bootClass) {
+            this.setBootClass(bootClass);
+            return this;
+        }
+
+        public Plugin scanPath(String scanPath) {
+            this.setScanPath(scanPath);
+            return this;
+        }
+
+        public Plugin config(String config) {
+            this.setConfig(config);
+            return this;
+        }
+
+        public Plugin and() {
+            PluginManager.plugins.add(this);
+            return new Plugin();
+        }
+
+        public PluginManager end() {
+            return PluginManager.this;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getBootClass() {
+            return bootClass;
+        }
+
+        public void setBootClass(String bootClass) {
+            this.bootClass = bootClass;
+        }
+
+        public List<String> getScanPath() {
+            return scanPath;
+        }
+
+        public void setScanPath(String scanPath) {
+            this.scanPath = Arrays.asList(scanPath.split(","));
+        }
+
+        public String getConfig() {
+            return config;
+        }
+
+        public void setConfig(String config) {
+            this.config = config;
         }
     }
 }

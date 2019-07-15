@@ -1,16 +1,22 @@
 plugin-in-driver:
-  jar-lib-path:
+  mode: # 加载插件的方式
+    java/yml/jdbc
+  base-scan-annotation: # 被扫描的注解，共有注解，全局扫描，会扫描所有带该注解的类
     ...
-  load-order:
-    hello-world:
-      id:
-      name:
+  jar-lib-path: # 插件jar包路径
+    ...
+  load-order: # 加载顺序
+    hello-world: # key为插件jar包名称
+      id: # 插件Id
+      name: # 插件名称
       url:
       boot-class:
         ...
-      scan-path:
+      scan-path: # 插件扫描注解的路径
         ...
-      config:
+      scan-annotation: # 插件扫描注解，独有注解
+        ...
+      config: # 插件其它配置
         ...
     hello-china:
       id:

@@ -1,7 +1,6 @@
 package com.fiicloud.plugindriver.core.entity;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
-import com.fiicloud.plugindriver.core.context.PlugInDriverContext;
+import com.fiicloud.plugindriver.core.builder.PlugInDriver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,12 +60,12 @@ public class Plugin {
     }
 
     public Plugin.PluginBuilder and() {
-        PlugInDriverContext.addPlugin(this);
+        PlugInDriver.addPlugin(this);
         return Plugin.builder();
     }
 
     public void end() {
-        PlugInDriverContext.addPlugin(this);
+        PlugInDriver.addPlugin(this);
     }
 
     public static Plugin.PluginBuilder builder() {

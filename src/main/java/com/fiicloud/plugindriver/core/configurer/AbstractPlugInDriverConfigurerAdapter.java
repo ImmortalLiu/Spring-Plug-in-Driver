@@ -1,13 +1,15 @@
-package com.fiicloud.plugindriver.core.base;
+package com.fiicloud.plugindriver.core.configurer;
 
+import com.fiicloud.plugindriver.core.base.BaseBuilder;
+import com.fiicloud.plugindriver.core.base.BaseConfigurer;
 
 /**
  * @author Anthony
  */
-public abstract class BaseConfigurerAdapter<O, B extends BaseBuilder<O>> implements BaseConfigurer<O, B> {
+public abstract class AbstractPlugInDriverConfigurerAdapter<O, B extends BaseBuilder<O>> implements BaseConfigurer<O, B> {
     private B pluginDriverBuilder;
 
-    public BaseConfigurerAdapter() {
+    public AbstractPlugInDriverConfigurerAdapter() {
     }
 
     @Override

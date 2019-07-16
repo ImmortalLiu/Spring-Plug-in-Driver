@@ -3,5 +3,9 @@
 
 ### 目前规划 ###
 1.深入了解spring容器
+
 2.阅读一些框架源码，储备技术
+
 3.完善想法，搭建大致架构
+
+![image](https://github.com/ImmortalLiu/Spring-Plug-in-Driver/blob/master/images/Plug-In-Driver.png)

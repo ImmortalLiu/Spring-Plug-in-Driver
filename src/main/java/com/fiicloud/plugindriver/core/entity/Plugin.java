@@ -60,12 +60,10 @@ public class Plugin {
     }
 
     public Plugin.PluginBuilder and() {
-        PlugInDriver.addPlugin(this);
         return Plugin.builder();
     }
 
     public void end() {
-        PlugInDriver.addPlugin(this);
     }
 
     public static Plugin.PluginBuilder builder() {

@@ -5,7 +5,7 @@ import com.fiicloud.plugindriver.core.builder.PlugInDriverBuilder;
 /**
  * @author Anthony
  */
-public class JavaPlugInDriverConfigurer<H extends PlugInDriverBuilder<H>> extends AbstractPlugInDriverConfigurer<YmlPlugInDriverConfigurer<H>, H> {
+public class JavaPlugInDriverConfigurer<H extends PlugInDriverBuilder<H>> extends AbstractPlugInDriverConfigurer<JavaPlugInDriverConfigurer<H>, H> {
 
     public JavaPlugInDriverConfigurer() {
     }

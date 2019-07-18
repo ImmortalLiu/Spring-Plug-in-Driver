@@ -9,4 +9,10 @@ public class JavaPlugInDriverConfigurer<H extends PlugInDriverBuilder<H>> extend
 
     public JavaPlugInDriverConfigurer() {
     }
+
+    public PluginInfoConfigurer<JavaPlugInDriverConfigurer> loadOrder() {
+        PluginInfoConfigurer<JavaPlugInDriverConfigurer> pluginInfoConfigurer = new PluginInfoConfigurer<>();
+        pluginInfoConfigurer.setPlugInDriverConfigurer(this);
+        return pluginInfoConfigurer;
+    }
 }

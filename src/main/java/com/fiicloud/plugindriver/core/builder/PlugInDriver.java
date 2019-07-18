@@ -10,9 +10,7 @@ import com.fiicloud.plugindriver.core.entity.Plugin;
 import com.fiicloud.plugindriver.core.exception.ConfigurerException;
 import org.springframework.context.ApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Anthony
@@ -22,11 +20,15 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     /**
      * 存储所有需要扫描的注解或类
      */
-    private List<Class> scanAnnotations = new ArrayList<>();
+    private List<Class> baseScanAnnotations = new ArrayList<>();
     /**
      * 存储所有的插件
      */
     private List<Plugin> plugins = new ArrayList<>();
+    /**
+     * 插件包路径
+     */
+    private String jarLibPath;
     /**
      * 插件驱动使用哪种配置方式
      */
@@ -68,6 +70,26 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      */
     public PlugInDriver mode(PlugInDriver.ConfigurerMode configurerMode) {
         this.mode = configurerMode;
+        return this;
+    }
+
+    /**
+     * 设置被扫描的注解，共有注解，全局扫描，会扫描所有带该注解的类
+     * @param classes 被扫描的注解
+     * @return PlugInDriver
+     */
+    public PlugInDriver baseScanAnnotation(Class... classes) {
+        this.baseScanAnnotations.addAll(Arrays.asList(classes));
+        return this;
+    }
+
+    /**
+     * 设置插件包路径
+     * @param path 路径
+     * @return PlugInDriver
+     */
+    public PlugInDriver jarLibPath(String path) {
+        this.jarLibPath = path;
         return this;
     }
 
@@ -116,6 +138,14 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     }
 
     /**
+     * 添加多个插件
+     * @param pluginList 多个插件
+     */
+    public void addPlugins(List<Plugin> pluginList) {
+        this.plugins.addAll(pluginList);
+    }
+
+    /**
      * 添加插件
      * @param plugin 插件
      */
@@ -128,7 +158,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      * @param c 需要扫描的注解或类
      */
     public void addScanAnnotation(Class c) {
-        scanAnnotations.add(c);
+        baseScanAnnotations.add(c);
     }
 
     /**
@@ -152,7 +182,10 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
         super.setSharedObject(sharedType, object);
     }
 
-    private static enum ConfigurerMode {
+    /**
+     * 配置类型
+     */
+    public static enum ConfigurerMode {
         /**
          * 使用Java方式
          */
@@ -168,7 +201,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
 
         private final String mode;
 
-        private ConfigurerMode(String mode) {
+        ConfigurerMode(String mode) {
             this.mode = mode;
         }
 

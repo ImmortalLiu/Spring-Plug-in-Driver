@@ -2,6 +2,7 @@ package com.fiicloud.plugindriver.core.builder;
 
 import com.fiicloud.plugindriver.core.base.BaseBuilder;
 import com.fiicloud.plugindriver.core.base.BaseConfigurer;
+import com.fiicloud.plugindriver.core.configurer.AbstractPlugInDriverConfigurerAdapter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
@@ -54,7 +55,8 @@ public abstract class AbstractConfiguredPlugInDriverBuilder<O, B extends BaseBui
         this.allowConfigurersOfSameType = allowConfigurersOfSameType;
     }
 
-    public <C extends BaseConfigurer<O, B>> C apply(C configurer) throws Exception {
+    public <C extends AbstractPlugInDriverConfigurerAdapter<O, B>> C apply(C configurer) throws Exception {
+        configurer.setPluginDriverBuilder((B) this);
         this.add(configurer);
         return configurer;
     }
@@ -265,6 +267,9 @@ public abstract class AbstractConfiguredPlugInDriverBuilder<O, B extends BaseBui
         }
     }
 
+    /**
+     * 构建状态
+     */
     private static enum BuildState {
         /**
          *未构建
@@ -289,7 +294,7 @@ public abstract class AbstractConfiguredPlugInDriverBuilder<O, B extends BaseBui
 
         private final int order;
 
-        private BuildState(int order) {
+        BuildState(int order) {
             this.order = order;
         }
 

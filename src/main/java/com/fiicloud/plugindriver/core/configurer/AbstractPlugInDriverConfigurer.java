@@ -11,6 +11,10 @@ public abstract class AbstractPlugInDriverConfigurer<T extends AbstractPlugInDri
     public AbstractPlugInDriverConfigurer() {
     }
 
+    /**
+     * 取消配置类
+     * @return PlugInDriverBuilder
+     */
     public B disable() {
         ((PlugInDriverBuilder)this.getPluginDriverBuilder()).removeConfigurer(this.getClass());
         return this.getPluginDriverBuilder();

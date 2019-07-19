@@ -1,7 +1,6 @@
 package com.fiicloud.plugindriver.core.configurer;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
-import com.fiicloud.plugindriver.core.base.BaseConfigurer;
+import com.fiicloud.plugindriver.core.builder.BaseBuilder;
 
 /**
  * @author Anthony
@@ -42,7 +41,7 @@ public abstract class AbstractPlugInDriverConfigurerAdapter<O, B extends BaseBui
 
     /**
      * 获取当前PlugInDriver
-     * @return PlugInDriver
+     * @return PluginBuilder
      */
     protected final B getPluginDriverBuilder() {
         if (this.pluginDriverBuilder == null) {

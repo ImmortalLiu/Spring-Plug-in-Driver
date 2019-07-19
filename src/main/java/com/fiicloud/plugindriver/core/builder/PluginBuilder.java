@@ -1,6 +1,5 @@
 package com.fiicloud.plugindriver.core.builder;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
 import com.fiicloud.plugindriver.core.configurer.AbstractPlugInDriverConfigurerAdapter;
 import com.fiicloud.plugindriver.core.configurer.JDBCPlugInDriverConfigurer;
 import com.fiicloud.plugindriver.core.configurer.JavaPlugInDriverConfigurer;
@@ -16,7 +15,7 @@ import java.util.*;
  * @author Anthony
  */
 @SuppressWarnings("unchecked")
-public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<PlugInDriverContext, PlugInDriver> implements BaseBuilder<PlugInDriverContext>, PlugInDriverBuilder<PlugInDriver> {
+public final class PluginBuilder extends AbstractConfiguredPlugInDriverBuilder<PlugInDriverContext, PluginBuilder> implements BaseBuilder<PlugInDriverContext>, PlugInDriverBuilder<PluginBuilder> {
     /**
      * 存储所有需要扫描的注解或类
      */
@@ -32,12 +31,12 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     /**
      * 插件驱动使用哪种配置方式
      */
-    private PlugInDriver.ConfigurerMode mode;
+    private PluginBuilder.ConfigurerMode mode;
 
     /**
      * @param sharedObjects 共享的对象
      */
-    public PlugInDriver(Map<Class<?>, Object> sharedObjects) {
+    public PluginBuilder(Map<Class<?>, Object> sharedObjects) {
         for (Map.Entry<Class<?>, Object> classObjectEntry : sharedObjects.entrySet()) {
             this.setSharedObject((Class) classObjectEntry.getKey(), classObjectEntry.getValue());
         }
@@ -58,7 +57,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      * @return 配置类
      * @throws Exception 异常
      */
-    private <C extends AbstractPlugInDriverConfigurerAdapter<PlugInDriverContext, PlugInDriver>> C getOrApply(C configurer) throws Exception {
+    private <C extends AbstractPlugInDriverConfigurerAdapter<PlugInDriverContext, PluginBuilder>> C getOrApply(C configurer) throws Exception {
         C existingConfig = (C) this.getConfigurer(configurer.getClass());
         return existingConfig != null ? existingConfig : this.apply(configurer);
     }
@@ -66,9 +65,9 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     /**
      * 设置插件驱动配置方式
      * @param configurerMode 插件驱动配置方式 java/jdbc/yml
-     * @return PlugInDriver
+     * @return PluginBuilder
      */
-    public PlugInDriver mode(PlugInDriver.ConfigurerMode configurerMode) {
+    public PluginBuilder mode(PluginBuilder.ConfigurerMode configurerMode) {
         this.mode = configurerMode;
         return this;
     }
@@ -76,9 +75,9 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     /**
      * 设置被扫描的注解，共有注解，全局扫描，会扫描所有带该注解的类
      * @param classes 被扫描的注解
-     * @return PlugInDriver
+     * @return PluginBuilder
      */
-    public PlugInDriver baseScanAnnotation(Class... classes) {
+    public PluginBuilder baseScanAnnotation(Class... classes) {
         this.baseScanAnnotations.addAll(Arrays.asList(classes));
         return this;
     }
@@ -86,9 +85,9 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
     /**
      * 设置插件包路径
      * @param path 路径
-     * @return PlugInDriver
+     * @return PluginBuilder
      */
-    public PlugInDriver jarLibPath(String path) {
+    public PluginBuilder jarLibPath(String path) {
         this.jarLibPath = path;
         return this;
     }
@@ -98,7 +97,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      * @return Java配置方式类
      * @throws Exception 异常
      */
-    public JavaPlugInDriverConfigurer<PlugInDriver> java() throws Exception{
+    public JavaPlugInDriverConfigurer<PluginBuilder> java() throws Exception{
         if (!mode.isJava()) {
             throw new ConfigurerException("mode is not java");
         }
@@ -110,7 +109,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      * @return Jdbc配置方式类
      * @throws Exception 异常
      */
-    public JDBCPlugInDriverConfigurer<PlugInDriver> jdbc() throws Exception{
+    public JDBCPlugInDriverConfigurer<PluginBuilder> jdbc() throws Exception{
         if (!mode.isJdbc()) {
             throw new ConfigurerException("mode is not jdbc");
         }
@@ -122,7 +121,7 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
      * @return yml配置方式类
      * @throws Exception 异常
      */
-    public YmlPlugInDriverConfigurer<PlugInDriver> yml() throws Exception{
+    public YmlPlugInDriverConfigurer<PluginBuilder> yml() throws Exception{
         if (!mode.isYml()) {
             throw new ConfigurerException("mode is not yml");
         }
@@ -131,10 +130,10 @@ public final class PlugInDriver extends AbstractConfiguredPlugInDriverBuilder<Pl
 
     /**
      * 连接配置
-     * @return PlugInDriver
+     * @return PluginBuilder
      */
-    public PlugInDriver and() {
-        return PlugInDriver.this;
+    public PluginBuilder and() {
+        return PluginBuilder.this;
     }
 
     /**

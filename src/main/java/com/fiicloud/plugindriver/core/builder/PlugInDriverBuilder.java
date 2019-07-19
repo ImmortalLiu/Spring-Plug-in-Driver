@@ -1,7 +1,6 @@
 package com.fiicloud.plugindriver.core.builder;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
-import com.fiicloud.plugindriver.core.base.BaseConfigurer;
+import com.fiicloud.plugindriver.core.configurer.BaseConfigurer;
 import com.fiicloud.plugindriver.core.context.PlugInDriverContext;
 
 public interface PlugInDriverBuilder<P extends PlugInDriverBuilder<P>> extends BaseBuilder<PlugInDriverContext> {

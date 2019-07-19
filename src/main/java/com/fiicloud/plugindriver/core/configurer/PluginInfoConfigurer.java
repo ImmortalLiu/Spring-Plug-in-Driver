@@ -1,6 +1,5 @@
 package com.fiicloud.plugindriver.core.configurer;
 
-import com.fiicloud.plugindriver.core.builder.PlugInDriver;
 import com.fiicloud.plugindriver.core.entity.Plugin;
 
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class PluginInfoConfigurer<P extends AbstractPlugInDriverConfigurer> {
         this.plugInDriverConfigurer = plugInDriverConfigurer;
     }
 
-    public PluginInfoConfigurer.PluginBuilder builder() {
-        return new PluginInfoConfigurer.PluginBuilder();
+    public PluginBuilder builder() {
+        return new PluginBuilder();
     }
 
     public class PluginBuilder {
@@ -36,32 +35,32 @@ public class PluginInfoConfigurer<P extends AbstractPlugInDriverConfigurer> {
         private List<Class> scanAnnotation;
         private String config;
 
-        public PluginInfoConfigurer.PluginBuilder id(String id){
+        public PluginBuilder id(String id){
             this.id = id;
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder name(String name){
+        public PluginBuilder name(String name){
             this.name = name;
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder url(String url) {
+        public PluginBuilder url(String url) {
             this.url = url;
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder bootClass(String bootClass) {
+        public PluginBuilder bootClass(String bootClass) {
             this.bootClass = bootClass;
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder scanPath(String scanPath) {
+        public PluginBuilder scanPath(String scanPath) {
             this.scanPath = Arrays.asList(scanPath.split(","));
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder scanAnnotation(String scanAnnotation) {
+        public PluginBuilder scanAnnotation(String scanAnnotation) {
             String[] classPaths = scanAnnotation.split(",");
             List<Class> classes = new ArrayList<>();
             try {
@@ -76,31 +75,31 @@ public class PluginInfoConfigurer<P extends AbstractPlugInDriverConfigurer> {
             return this;
         }
 
-        public PluginInfoConfigurer.PluginBuilder config(String config) {
+        public PluginBuilder config(String config) {
             this.config = config;
             return this;
         }
 
         public PluginInfoConfigurer with() {
-            ((PlugInDriver)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
+            ((com.fiicloud.plugindriver.core.builder.PluginBuilder)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
                 .addPlugin(new Plugin(this.id, this.name, this.url, this.bootClass, this.scanPath, this.scanAnnotation, this.config));
             return PluginInfoConfigurer.this;
         }
 
         public JavaPlugInDriverConfigurer backJava() {
-            ((PlugInDriver)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
+            ((com.fiicloud.plugindriver.core.builder.PluginBuilder)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
                     .addPlugin(new Plugin(this.id, this.name, this.url, this.bootClass, this.scanPath, this.scanAnnotation, this.config));
             return (JavaPlugInDriverConfigurer)PluginInfoConfigurer.this.and();
         }
 
         public YmlPlugInDriverConfigurer backYml() {
-            ((PlugInDriver)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
+            ((com.fiicloud.plugindriver.core.builder.PluginBuilder)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
                     .addPlugin(new Plugin(this.id, this.name, this.url, this.bootClass, this.scanPath, this.scanAnnotation, this.config));
             return (YmlPlugInDriverConfigurer)PluginInfoConfigurer.this.and();
         }
 
         public JDBCPlugInDriverConfigurer backJdbc() {
-            ((PlugInDriver)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
+            ((com.fiicloud.plugindriver.core.builder.PluginBuilder)PluginInfoConfigurer.this.plugInDriverConfigurer.getPluginDriverBuilder())
                     .addPlugin(new Plugin(this.id, this.name, this.url, this.bootClass, this.scanPath, this.scanAnnotation, this.config));
             return (JDBCPlugInDriverConfigurer)PluginInfoConfigurer.this.and();
         }

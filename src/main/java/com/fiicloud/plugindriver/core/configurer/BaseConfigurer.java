@@ -1,4 +1,6 @@
-package com.fiicloud.plugindriver.core.base;
+package com.fiicloud.plugindriver.core.configurer;
+
+import com.fiicloud.plugindriver.core.builder.BaseBuilder;
 
 /**
  * @author Anthony

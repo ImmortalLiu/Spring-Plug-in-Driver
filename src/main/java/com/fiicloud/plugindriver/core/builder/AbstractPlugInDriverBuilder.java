@@ -1,7 +1,6 @@
 package com.fiicloud.plugindriver.core.builder;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
-import com.fiicloud.plugindriver.core.exception.AlreadyBuiltException;
+import com.fiicloud.plugindriver.core.exception.AlreadyBuildException;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -18,7 +17,7 @@ public abstract class AbstractPlugInDriverBuilder<O> implements BaseBuilder<O> {
             this.object = this.doBuild();
             return this.object;
         } else {
-            throw new AlreadyBuiltException("This object has already been built");
+            throw new AlreadyBuildException("This object has already been built");
         }
     }
 

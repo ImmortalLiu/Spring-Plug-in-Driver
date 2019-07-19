@@ -1,7 +1,6 @@
 package com.fiicloud.plugindriver.core.builder;
 
-import com.fiicloud.plugindriver.core.base.BaseBuilder;
-import com.fiicloud.plugindriver.core.base.BaseConfigurer;
+import com.fiicloud.plugindriver.core.configurer.BaseConfigurer;
 import com.fiicloud.plugindriver.core.configurer.AbstractPlugInDriverConfigurerAdapter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
